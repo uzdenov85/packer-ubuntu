@@ -1,0 +1,49 @@
+source "vsphere-iso" "ubuntu2204" {
+    vcenter_server              = "10.16.93.88"
+    username                    = "administrator@vsphere.local"
+    password                    = "@zinteX305#Yes"
+    host                        = "dell-esxi004.vdi.local"
+    resource_pool               = "RP1"
+    insecure_connection         = true
+
+
+    vm_name                     = "ubuntu-2204"
+    guest_os_type               = "ubuntu64Guest"
+
+
+    ssh_username                = "start"
+    # ssh_password                = "start"
+    ssh_timeout                 = "10m"
+    ssh_private_key_file        = "C:\\Users\\hadji\\.ssh\\id_ed25519"
+
+    CPUs                        = 2
+    RAM                         = 2048
+
+    datastore                   = "datastore1"
+    storage {
+        disk_size               = 24576
+        disk_thin_provisioned   = true
+    }
+
+    network_adapters {
+        network                 = "Green LAG-VLAN1693"
+        network_card            = "vmxnet3"
+    }
+
+
+    http_directory              = "C:\\Users\\hadji\\Packer\\Ubuntu2204-vsphere\\http"
+    http_bind_address           = "10.16.93.244"
+    http_ip                     = "10.16.93.244"
+    iso_url                     = "C:\\Users\\hadji\\Downloads\\ISO's\\ubuntu-22.04.1-live-server-amd64.iso"
+    iso_checksum                = "md5:e8d2a77c51b599c10651608a5d8c286f"
+
+
+    boot_wait                   = "10s"
+    boot_command = [
+        "<esc><wait>e<wait>",
+        "<down><down><down><end>",
+        "<bs><bs><bs><bs>",
+        "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ---",
+        "<wait3s><f10>"
+    ]
+}
